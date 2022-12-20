@@ -33,8 +33,9 @@
 
 <script setup>
 const route = useRoute()
+const useUtils = useUtilities()
 useHead({
-  title: `${route.params.name}`
+  title: useUtils.toUpperCase(`${route.params.name}`)
 })
 
 definePageMeta({
