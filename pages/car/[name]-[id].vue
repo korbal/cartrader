@@ -1,23 +1,23 @@
 <template>
-  <div>
+  <div v-if="car">
       
-
       <!-- CAR DETAIL PAGE -->
 
   <div>
     
     <!-- CAR HERO -->
-      <CarDetailHero/>
+    
+      <CarDetailHero :car="car" />
     <!-- CAR HERO END -->
 
     <!-- CAR ATTRIBUTES -->
     
-    <CarDetailAttribues/>
+    <CarDetailAttribues :features = "car.features"/>
 
     <!-- CAR ATTRIBUTES END-->
 
     <!-- CAR DESCRIPTION  -->
-    <CarDetailDescription/>
+    <CarDetailDescription :description="car.description"/>
     <!-- CAR DESCRIPTION END -->
 
     <!-- CAR CONTACT -->
@@ -32,6 +32,7 @@
 </template>
 
 <script setup>
+const {cars} = useCars()
 const route = useRoute()
 const useUtils = useUtilities()
 useHead({
@@ -41,6 +42,19 @@ useHead({
 definePageMeta({
   layout: 'custom',
 })
+
+const car = computed(() => {
+  return cars.find((c) => {
+    return c.id === parseInt(route.params.id)
+  })
+})
+
+if(!car.value) {
+  throw createError({
+    statusCode: 404,
+    message: `Car with id of ${route.params.id} does not exist`
+  })
+}
 
 </script>
 
